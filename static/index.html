@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#05060b">
+<meta name="description" content="Sealvix by Swanix Labs. Broken code goes in sealed. A verified fix comes out, proven inside a throwaway gVisor sandbox on Vultr.">
+<meta name="application-name" content="Sealvix">
+<meta property="og:site_name" content="Sealvix">
+<meta property="og:title" content="Sealvix · Broken code goes in sealed. A verified fix comes out.">
+<meta property="og:description" content="Verified fixes for failing tests, proven inside a throwaway gVisor sandbox on Vultr. By Swanix Labs.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sealvix by Swanix Labs">
+<title>Sealvix · Broken code goes in sealed. A verified fix comes out.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="/static/style.css">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body data-state="idle">
+<canvas id="bg" aria-hidden="true"></canvas>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<nav class="nav">
+  <a class="brand" href="/" aria-label="Sealvix home">
+    <span class="logo" aria-hidden="true"><span class="dot"></span></span>
+    <span>Seal<em>vix</em></span>
+  </a>
+  <div class="navlinks">
+    <a href="#run">Run</a>
+    <a href="#containment">Containment</a>
+    <a href="#diff-card">Diff</a>
+    <a href="#receipt-card">Receipt</a>
+  </div>
+  <span class="byline">by Swanix Labs</span>
+</nav>
+
+<header class="hero" id="run">
+  <div class="hero-copy">
+    <p class="eyebrow"><span class="pulse" aria-hidden="true"></span> Autonomous test repair · Blast radius zero</p>
+    <h1>Broken code goes in <span class="grad">sealed.</span><br>A verified fix comes out.</h1>
+    <p class="tagline">Sealvix diagnoses, patches and re-verifies your repo inside a throwaway gVisor sandbox on Vultr. Every step gets a fresh container, no network, no secrets, and is destroyed after. You get the diff, the before/after logs, and a SHA-256 receipt.</p>
+
+    <section class="card glass intake tilt" aria-label="Start a run">
+      <form id="f">
+        <label class="field">
+          <span class="sr">GitHub repository URL</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.6 18.3 5 18.3 5c.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg>
+          <input id="src" placeholder="https://github.com/owner/repo" autocomplete="off" spellcheck="false" inputmode="url">
+        </label>
+        <label class="field branch">
+          <span class="sr">Branch (optional)</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3a3 3 0 0 0-1 5.8v6.4A3 3 0 1 0 7 15.2V13c0-1.1.9-2 2-2h4a4 4 0 0 0 4-4v-.2A3 3 0 1 0 15 6.8V7a2 2 0 0 1-2 2H9c-.7 0-1.4.2-2 .5V8.8A3 3 0 0 0 6 3z"/></svg>
+          <input id="branch" placeholder="branch (optional)" autocomplete="off" spellcheck="false">
+        </label>
+        <button type="submit" class="run"><span>Seal &amp; fix</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </form>
+      <div class="demos-row"><span class="demos-label">Or try a demo</span><div id="demos" class="demos"></div></div>
+      <div id="err" class="err" role="alert"></div>
+    </section>
+  </div>
+
+  <div class="hero-visual" aria-hidden="true">
+    <div class="scene">
+      <div class="ring r1"><b></b></div>
+      <div class="ring r2"><b></b></div>
+      <div class="cube">
+        <div class="face f1"></div><div class="face f2"></div><div class="face f3"></div>
+        <div class="face f4"></div><div class="face f5"></div><div class="face f6"></div>
+        <div class="inner">
+          <div class="face"></div><div class="face"></div><div class="face"></div>
+          <div class="face"></div><div class="face"></div><div class="face"></div>
+        </div>
+      </div>
+      <div class="core"></div>
+      <div class="shadow"></div>
+    </div>
+    <span class="float c1">network: none</span>
+    <span class="float c2">rootfs: read-only</span>
+    <span class="float c3">caps: all dropped</span>
+    <span class="float c4">runtime: gVisor</span>
+  </div>
+</header>
+
+<main>
+  <section class="card glass pipeline-card reveal" aria-label="Pipeline">
+    <div class="card-head">
+      <h2>Pipeline</h2>
+      <span id="status" class="status">idle</span>
+    </div>
+    <ol id="pipeline" class="pipeline">
+      <li data-stage="intake"><span class="node"><i>1</i></span><span class="label">Intake</span><span class="note">clone · detect</span></li>
+      <li data-stage="install"><span class="node"><i>2</i></span><span class="label">Install</span><span class="note">sandboxed deps</span></li>
+      <li data-stage="baseline"><span class="node"><i>3</i></span><span class="label">Baseline</span><span class="note">reproduce failure</span></li>
+      <li data-stage="fix"><span class="node"><i>4</i></span><span class="label">Diagnose · Patch · Verify</span><span class="note">agent loop</span></li>
+      <li data-stage="report"><span class="node"><i>5</i></span><span class="label">Report</span><span class="note">diff + receipt</span></li>
+    </ol>
+  </section>
+
+  <div class="grid">
+    <section class="card glass tilt reveal" id="containment">
+      <div class="card-head">
+        <h2>Containment</h2>
+        <span id="iso" class="chip">loading…</span>
+      </div>
+      <ul id="profile" class="profile"></ul>
+      <h3>Fired this run</h3>
+      <div class="badges">
+        <span class="badge" data-k="network_blocked"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5z"/></svg><span class="b-l">Network denied</span><span class="b-s">armed</span></span>
+        <span class="badge" data-k="readonly_fs"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5z"/></svg><span class="b-l">Root read-only</span><span class="b-s">armed</span></span>
+        <span class="badge" data-k="pids_cap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5z"/></svg><span class="b-l">PIDs cap hit</span><span class="b-s">armed</span></span>
+        <span class="badge" data-k="memory_cap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5z"/></svg><span class="b-l">Memory cap hit</span><span class="b-s">armed</span></span>
+        <span class="badge" data-k="wall_clock_cap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5z"/></svg><span class="b-l">Time limit hit</span><span class="b-s">armed</span></span>
+        <span class="badge" data-k="permission_denied"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5z"/></svg><span class="b-l">Permission denied</span><span class="b-s">armed</span></span>
+      </div>
+      <div class="destroyed"><span class="bin" aria-hidden="true">⌫</span> Containers destroyed <b id="destroyed">0</b></div>
+    </section>
+
+    <section class="card glass tilt reveal">
+      <div class="card-head">
+        <h2>Live events</h2>
+        <span class="muted small">click a step to open its log</span>
+      </div>
+      <ol id="timeline" class="timeline"><li class="empty">Waiting for a run…</li></ol>
+    </section>
+  </div>
+
+  <section class="card glass reveal">
+    <div class="card-head">
+      <h2>Sandbox log <span id="logstep" class="muted"></span></h2>
+      <div id="logtabs" class="tabs" role="tablist" aria-label="Step logs"></div>
+    </div>
+    <pre id="log" class="log term">Pick a demo or paste a public GitHub repo with failing tests.</pre>
+  </section>
+
+  <section class="card glass reveal" aria-label="Before and after">
+    <div class="card-head"><h2>Before / After</h2></div>
+    <div class="ba">
+      <div class="pane">
+        <div class="pane-head"><span>Before · baseline</span><span id="beforeExit" class="exit">–</span></div>
+        <pre id="before" class="log muted">The failing baseline run shows up here.</pre>
+      </div>
+      <div class="pane">
+        <div class="pane-head"><span>After · final verify</span><span id="afterExit" class="exit">–</span></div>
+        <pre id="after" class="log muted">The final verification run shows up here.</pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="card glass reveal" id="diff-card">
+    <div class="card-head"><h2>Verified diff</h2><span id="diffstat" class="muted small"></span></div>
+    <pre id="diff" class="diff muted">No changes yet.</pre>
+  </section>
+
+  <section class="card glass reveal" id="receipt-card">
+    <div class="card-head">
+      <h2>Receipt</h2>
+      <button type="button" id="copyHash" class="ghost" disabled>Copy SHA-256</button>
+    </div>
+    <div class="seal" id="seal">
+      <div class="seal-ring" aria-hidden="true"></div>
+      <div class="seal-body">
+        <span class="seal-k">receipt_sha256</span>
+        <code id="receiptHash">pending</code>
+      </div>
+    </div>
+    <details class="raw">
+      <summary>Full receipt JSON</summary>
+      <pre id="receipt" class="receipt muted">Each run ends with a hash over the diff, the before/after logs and every container's fate.</pre>
+    </details>
+  </section>
+</main>
+
+<footer>
+  <span><b>Sealvix</b> · built by Swanix Labs · MIT</span>
+  <span class="credits">Made by <b>Swanix</b> ·
+    <a href="https://x.com/swanixcrypto" target="_blank" rel="noopener">X @swanixcrypto</a> ·
+    <a href="https://t.me/swanixcrypto" target="_blank" rel="noopener">Telegram</a> ·
+    <a href="https://github.com/Arindam5294" target="_blank" rel="noopener">GitHub @Arindam5294</a></span>
+  <span class="muted">Vultr Serverless Inference · Vultr Cloud Compute · gVisor</span>
+</footer>
+<script src="/static/app.js"></script>
+</body>
+</html>
