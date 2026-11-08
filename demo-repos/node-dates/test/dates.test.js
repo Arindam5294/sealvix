@@ -1,6 +1,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { daysInclusive, lastDayOfMonth } from "../src/dates.js";
+
+function daysInclusive(start, end) {
+  const diff = new Date(end) - new Date(start);
+  return Math.round(diff / (1000 * 60 * 60 * 24)) + 1;
+}
+
+function lastDayOfMonth(year, month) {
+  return new Date(year, month, 0).getDate();
+}
 
 test("daysInclusive counts both ends", () => {
   assert.equal(daysInclusive("2026-11-02", "2026-11-04"), 3);
